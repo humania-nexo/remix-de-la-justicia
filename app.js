@@ -439,18 +439,28 @@ function triggerDdosImpact() {
 /**
  * Actualiza el movimiento continuo de vaivén de la aguja osciladora.
  */
-function updateInjectionNeedle() {
+function updateInjectionNeedle(currentTime) {
     if (gameState.step !== 'hack3') return;
     
-    gameState.injectionProgress += gameState.injectionDirection;
+    // Calcular delta de tiempo real en segundos (independiente de hercios de monitor)
+    const now = currentTime || performance.now();
+    if (!gameState.lastFrameTime) {
+        gameState.lastFrameTime = now;
+    }
+    const deltaTime = Math.min(0.1, (now - gameState.lastFrameTime) / 1000); // Límite de seguridad
+    gameState.lastFrameTime = now;
+    
+    // Velocidad constante del rebote (160 unidades por segundo para un reto premium emocionante)
+    const speed = 160;
+    gameState.injectionProgress += gameState.injectionDirection * speed * deltaTime;
     
     // Invertir dirección al chocar contra los límites del rail (0 y 100)
     if (gameState.injectionProgress >= 100) {
         gameState.injectionProgress = 100;
-        gameState.injectionDirection = -Math.abs(gameState.injectionDirection);
+        gameState.injectionDirection = -1; // Dirección izquierda
     } else if (gameState.injectionProgress <= 0) {
         gameState.injectionProgress = 0;
-        gameState.injectionDirection = Math.abs(gameState.injectionDirection);
+        gameState.injectionDirection = 1; // Dirección derecha
     }
     
     // Aplicar posicionamiento visual de la aguja en el DOM
@@ -583,6 +593,7 @@ function switchStep(targetStep) {
     } else if (targetStep === 'hack3') {
         // Iniciar el ciclo de aguja rebotando
         cancelAnimationFrame(gameState.animationFrameId);
+        gameState.lastFrameTime = performance.now();
         updateInjectionNeedle();
         addSystemLog("Fase 3: Sincronización de payload requerida para bypass.");
     } else if (targetStep === 'victory') {
