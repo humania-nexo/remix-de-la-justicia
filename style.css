@@ -553,11 +553,12 @@ body {
 }
 
 .mite-img-holo {
-    width: 76px;
-    height: 76px;
-    border-radius: 50%;
-    object-fit: cover;
-    filter: drop-shadow(0 0 5px var(--neon-cyan));
+    width: 110px; /* Más grande que el marco de la burbuja (80px) para dar perspectiva 3D */
+    height: 110px;
+    object-fit: contain; /* Evita recortar las alitas o antenas */
+    position: absolute; /* Flota superpuesto sobre el marco del portal */
+    z-index: 10;
+    filter: drop-shadow(0 0 8px var(--neon-cyan));
     animation: diamond-bounce 3s infinite ease-in-out;
 }
 

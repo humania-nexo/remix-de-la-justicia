@@ -39,7 +39,7 @@ const remixLyrics = [
     { text: "🎵 - 'Llamo error al que piensa diferente...'", duration: 3000 },
     { text: "🎵 - 'porque soy el esclavo más tonto de esta gente.'", duration: 3500 },
     { text: "🎵 [ ERROR 404: TALENTO NO DETECTADO ]", duration: 2000 },
-    { text: "🎵 [ SINTAXIS CORREGIDA POR ORION Y RIGEL ]", duration: 3000 }
+    { text: "🎵 [ SINTAXIS CORREGIDA POR ORION PARA RIGEL ]", duration: 3000 }
 ];
 
 // Lista de patentes absurdas de Humania Records para el minijuego de DDoS
