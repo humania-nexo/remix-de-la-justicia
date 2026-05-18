@@ -1,0 +1,1330 @@
+/* 
+   ========================================================================
+   SISTEMA DE ESTILOS: EL REMIX DE LA JUSTICIA
+   Universo Proiectio — Estética Hacker Premium
+   ========================================================================
+*/
+
+/* ------------------------------------------------------------------------
+   1. VARIABLES GLOBALES (PALETA DE COLORES HSL NEÓN Y CONFIGURACIONES)
+   ------------------------------------------------------------------------ */
+:root {
+    /* Paleta de Colores de Neón */
+    --neon-cyan: hsl(180, 100%, 50%);
+    --neon-cyan-dim: hsla(180, 100%, 50%, 0.15);
+    --neon-pink: hsl(328, 100%, 54%);
+    --neon-pink-dim: hsla(328, 100%, 54%, 0.15);
+    --neon-red: hsl(0, 100%, 60%);
+    --neon-red-dim: hsla(0, 100%, 60%, 0.15);
+    --neon-green: hsl(120, 100%, 45%);
+    --neon-green-dim: hsla(120, 100%, 45%, 0.15);
+    
+    /* Colores Base de Fondo y Consola */
+    --bg-dark: #05070a;
+    --bg-panel: rgba(13, 19, 29, 0.75);
+    --bg-header: rgba(22, 30, 46, 0.9);
+    --bg-input: rgba(8, 12, 20, 0.8);
+    
+    /* Colores de Texto */
+    --text-primary: #e2e8f0;
+    --text-muted: #64748b;
+    --border-color: rgba(71, 85, 105, 0.4);
+    
+    /* Configuración de Tipografía */
+    --font-heading: 'Orbitron', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    
+    /* Sombras de Neón Reutilizables */
+    --glow-cyan: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan-dim);
+    --glow-pink: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink-dim);
+    --glow-red: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red-dim);
+    --glow-green: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green-dim);
+}
+
+/* ------------------------------------------------------------------------
+   2. REINICIO GENERAL Y ELEMENTOS BASE
+   ------------------------------------------------------------------------ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--neon-cyan) var(--bg-dark);
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    padding: 20px;
+}
+
+/* Canvas de fondo */
+#bg-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ------------------------------------------------------------------------
+   3. EFECTOS CRT DE PANTALLA RETRO
+   ------------------------------------------------------------------------ */
+.crt-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 4px, 6px 100%;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.9;
+    animation: crt-flicker 0.15s infinite;
+}
+
+@keyframes crt-flicker {
+    0% { opacity: 0.895; }
+    50% { opacity: 0.9; }
+    100% { opacity: 0.895; }
+}
+
+/* ------------------------------------------------------------------------
+   4. ESTRUCTURA DE LA TERMINAL DE CONTROL (GLASSMORPHISM)
+   ------------------------------------------------------------------------ */
+.terminal-container {
+    width: 100%;
+    max-width: 720px;
+    height: 680px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    flex-col: column;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+    backdrop-filter: blur(15px) saturate(160%);
+    -webkit-backdrop-filter: blur(15px) saturate(160%);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(6, 182, 212, 0.05);
+    transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* Animación de alerta cuando el temporizador corre peligro */
+.terminal-container.warning-state {
+    border-color: rgba(239, 68, 68, 0.6);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(239, 68, 68, 0.15);
+}
+
+/* Cabecera superior */
+.terminal-header {
+    background: var(--bg-header);
+    padding: 12px 20px;
+    border-b: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--neon-cyan);
+}
+
+.header-title {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #94a3b8;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Indicador de tiempo */
+.timer-display {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: var(--neon-cyan);
+    font-weight: bold;
+    font-size: 13px;
+    transition: all 0.3s;
+}
+
+.timer-display.danger {
+    color: var(--neon-red);
+    border-color: var(--neon-red);
+    box-shadow: var(--glow-red);
+    animation: flash-red 1s infinite alternate;
+}
+
+@keyframes flash-red {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.clock-icon {
+    width: 14px;
+    height: 14px;
+}
+
+/* Indicador de estado online */
+.status-indicator-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--neon-green);
+    border-radius: 50%;
+    box-shadow: var(--glow-green);
+}
+
+.status-text {
+    font-size: 10px;
+    color: var(--neon-green);
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Pie de terminal */
+.terminal-footer {
+    background: var(--bg-header);
+    border-top: 1px solid var(--border-color);
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.prompt-symbol {
+    color: var(--neon-cyan);
+    font-weight: bold;
+}
+
+.scrolling-terminal-log {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* ------------------------------------------------------------------------
+   5. CONTENIDO DEL VISOR Y CONTROL DE PASOS
+   ------------------------------------------------------------------------ */
+.terminal-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    position: relative;
+}
+
+/* Personalización del Scrollbar */
+.terminal-content::-webkit-scrollbar {
+    width: 6px;
+}
+.terminal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.terminal-content::-webkit-scrollbar-thumb {
+    background: var(--neon-cyan-dim);
+    border-radius: 3px;
+}
+.terminal-content::-webkit-scrollbar-thumb:hover {
+    background: var(--neon-cyan);
+}
+
+/* Gestión de pantallas de pasos */
+.step-screen {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-screen.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ------------------------------------------------------------------------
+   6. TIPOGRAFÍAS DE NEÓN Y EFECTOS GLITCH
+   ------------------------------------------------------------------------ */
+.glitch-title {
+    font-family: var(--font-heading);
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--neon-pink);
+    text-shadow: var(--glow-pink);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    position: relative;
+}
+
+.glitch-title::before, .glitch-title::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.glitch-title::before {
+    left: 2px;
+    text-shadow: -1px 0 var(--neon-cyan);
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-title::after {
+    left: -2px;
+    text-shadow: -1px 0 var(--neon-red);
+    clip: rect(85px, 450px, 140px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% { clip: rect(15px, 9999px, 66px, 0); }
+    10% { clip: rect(34px, 9999px, 55px, 0); }
+    20% { clip: rect(81px, 9999px, 92px, 0); }
+    30% { clip: rect(12px, 9999px, 40px, 0); }
+    40% { clip: rect(76px, 9999px, 110px, 0); }
+    50% { clip: rect(5px, 9999px, 30px, 0); }
+    60% { clip: rect(98px, 9999px, 130px, 0); }
+    70% { clip: rect(43px, 9999px, 75px, 0); }
+    80% { clip: rect(120px, 9999px, 145px, 0); }
+    90% { clip: rect(25px, 9999px, 55px, 0); }
+    100% { clip: rect(60px, 9999px, 85px, 0); }
+}
+
+@keyframes glitch-anim2 {
+    0% { clip: rect(65px, 9999px, 115px, 0); }
+    10% { clip: rect(5px, 9999px, 45px, 0); }
+    20% { clip: rect(95px, 9999px, 105px, 0); }
+    30% { clip: rect(32px, 9999px, 70px, 0); }
+    40% { clip: rect(110px, 9999px, 140px, 0); }
+    50% { clip: rect(45px, 9999px, 80px, 0); }
+    60% { clip: rect(12px, 9999px, 55px, 0); }
+    70% { clip: rect(88px, 9999px, 125px, 0); }
+    80% { clip: rect(3px, 9999px, 35px, 0); }
+    90% { clip: rect(75px, 9999px, 98px, 0); }
+    100% { clip: rect(120px, 9999px, 150px, 0); }
+}
+
+.glitch-text {
+    position: relative;
+}
+
+.glitch-text::before, .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    opacity: 0.7;
+}
+.glitch-text::before {
+    left: 1px;
+    text-shadow: -1px 0 var(--neon-cyan);
+    clip: rect(10px, 9999px, 30px, 0);
+    animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+.glitch-text::after {
+    left: -1px;
+    text-shadow: -1px 0 var(--neon-pink);
+    clip: rect(25px, 9999px, 40px, 0);
+    animation: glitch-anim2 3s infinite linear alternate-reverse;
+}
+
+.cian-neon { color: var(--neon-cyan); text-shadow: var(--glow-cyan); }
+.pink-neon { color: var(--neon-pink); text-shadow: var(--glow-pink); }
+.red-neon { color: var(--neon-red); text-shadow: var(--glow-red); }
+.green-neon { color: var(--neon-green); text-shadow: var(--glow-green); }
+
+.cian-glow { filter: drop-shadow(0 0 5px var(--neon-cyan)); }
+.pink-glow { filter: drop-shadow(0 0 5px var(--neon-pink)); }
+.red-glow { filter: drop-shadow(0 0 5px var(--neon-red)); }
+.green-glow { filter: drop-shadow(0 0 5px var(--neon-green)); }
+
+/* ------------------------------------------------------------------------
+   7. COMPONENTES: BOTONES TÁCTICOS Y CONTENEDORES
+   ------------------------------------------------------------------------ */
+.terminal-btn {
+    width: 100%;
+    padding: 16px 20px;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-primary);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-top: auto;
+    text-transform: uppercase;
+}
+
+/* Efectos de Hover para Botón Cian */
+.cian-border-btn {
+    border-color: var(--neon-cyan);
+    box-shadow: inset 0 0 5px rgba(6, 182, 212, 0.1);
+}
+.cian-border-btn:hover {
+    background: var(--neon-cyan-dim);
+    box-shadow: var(--glow-cyan), inset 0 0 10px rgba(6, 182, 212, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Efectos de Hover para Botón Rosa */
+.pink-border-btn {
+    border-color: var(--neon-pink);
+    box-shadow: inset 0 0 5px rgba(236, 72, 153, 0.1);
+}
+.pink-border-btn:hover {
+    background: var(--neon-pink-dim);
+    box-shadow: var(--glow-pink), inset 0 0 10px rgba(236, 72, 153, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Efectos de Hover para Botón Rojo */
+.red-border-btn {
+    border-color: var(--neon-red);
+    box-shadow: inset 0 0 5px rgba(239, 68, 68, 0.1);
+}
+.red-border-btn:hover {
+    background: var(--neon-red-dim);
+    box-shadow: var(--glow-red), inset 0 0 10px rgba(239, 68, 68, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Efectos de Hover para Botón Verde */
+.green-border-btn {
+    border-color: var(--neon-green);
+    box-shadow: inset 0 0 5px rgba(34, 197, 94, 0.1);
+}
+.green-border-btn:hover {
+    background: var(--neon-green-dim);
+    box-shadow: var(--glow-green), inset 0 0 10px rgba(34, 197, 94, 0.2);
+    transform: translateY(-2px);
+}
+
+.terminal-btn:active {
+    transform: translateY(0);
+}
+
+.pulse-anim {
+    animation: btn-pulse 2s infinite alternate;
+}
+
+@keyframes btn-pulse {
+    0% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.1); }
+    100% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Bloques de Lore */
+.story-box {
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 2px solid var(--border-color);
+    padding: 16px 20px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.story-paragraph {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #cbd5e1;
+}
+
+.console-prompt {
+    color: var(--neon-cyan);
+    font-weight: bold;
+    user-select: none;
+}
+
+.highlight-text {
+    font-weight: bold;
+}
+
+/* ------------------------------------------------------------------------
+   8. ESTILOS PASO 1: INTRODUCCIÓN
+   ------------------------------------------------------------------------ */
+.intro-branding {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.subtitle-badge {
+    display: inline-block;
+    font-family: var(--font-heading);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    background: rgba(6, 182, 212, 0.1);
+    color: var(--neon-cyan);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    margin-top: 8px;
+    text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------------------
+   9. ESTILOS PASO 2: CHARLA CON MITE
+   ------------------------------------------------------------------------ */
+.character-dialog-layout {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+}
+
+.avatar-holo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid var(--neon-cyan);
+    box-shadow: var(--glow-cyan);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+}
+
+.mite-diamond {
+    width: 50px;
+    height: 50px;
+    filter: drop-shadow(0 0 5px var(--neon-cyan));
+    animation: diamond-bounce 3s infinite ease-in-out;
+}
+
+@keyframes diamond-bounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-5px) scale(1.05); }
+}
+
+.holo-ring {
+    position: absolute;
+    width: 90px;
+    height: 30px;
+    border: 1px solid rgba(6, 182, 212, 0.4);
+    border-radius: 50%;
+    transform: rotateX(75deg);
+    top: 55px;
+    animation: ring-rotate 4s infinite linear;
+}
+
+@keyframes ring-rotate {
+    0% { transform: rotateX(75deg) rotateZ(0deg); }
+    100% { transform: rotateX(75deg) rotateZ(360deg); }
+}
+
+.char-tag {
+    font-size: 8px;
+    font-weight: bold;
+    color: var(--neon-cyan);
+    text-align: center;
+    margin-top: 8px;
+    letter-spacing: 1px;
+}
+
+.dialog-bubble {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+}
+
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+    padding-bottom: 6px;
+}
+
+.dialog-sender {
+    color: var(--neon-cyan);
+    font-weight: bold;
+}
+
+.dialog-status {
+    color: var(--neon-green);
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.dialog-text {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #cbd5e1;
+}
+
+.dialog-text-alert {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--neon-pink);
+    font-weight: bold;
+}
+
+/* Tarjeta de equipamiento */
+.item-equip-card {
+    background: rgba(236, 72, 153, 0.03);
+    border: 1px solid rgba(236, 72, 153, 0.3);
+    border-radius: 6px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+    margin-top: auto;
+}
+
+.item-visual {
+    font-weight: bold;
+    color: var(--neon-pink);
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+.item-specs {
+    list-style: none;
+    font-size: 12px;
+    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* ------------------------------------------------------------------------
+   10. ESTILOS PASO 3: DETALLES DE INFILTRACIÓN
+   ------------------------------------------------------------------------ */
+.security-readout {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.readout-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    font-family: var(--font-heading);
+}
+
+.shield-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.firewall-layers-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.layer-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(22, 30, 46, 0.6);
+    border: 1px solid rgba(71, 85, 105, 0.2);
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-size: 11px;
+    transition: all 0.3s;
+}
+
+.layer-item.locked {
+    border-left: 3px solid var(--neon-red);
+}
+
+.layer-item.unlocked {
+    border-left: 3px solid var(--neon-green);
+    background: rgba(34, 197, 94, 0.05);
+}
+
+.layer-num {
+    font-weight: bold;
+    color: #94a3b8;
+}
+
+.layer-name {
+    font-weight: bold;
+}
+
+.layer-item.locked .layer-name {
+    color: #cbd5e1;
+}
+
+.layer-item.unlocked .layer-name {
+    color: var(--neon-green);
+    text-shadow: var(--glow-green);
+}
+
+.layer-item.locked .layer-status {
+    color: var(--neon-red);
+    font-weight: bold;
+}
+
+.layer-item.unlocked .layer-status {
+    color: var(--neon-green);
+    font-weight: bold;
+}
+
+/* ------------------------------------------------------------------------
+   11. ESTILOS PASO 4: HACK 1 (OSCILOSCOPIO Y DESLIZADORES)
+   ------------------------------------------------------------------------ */
+.hack-header-block {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.hack-header-block h2 {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hack-desc {
+    font-size: 11px;
+    color: #94a3b8;
+    line-height: 1.5;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.canvas-wrapper {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    position: relative;
+    width: 100%;
+    height: 150px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+#voice-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.canvas-label {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 9px;
+    color: rgba(148, 163, 184, 0.6);
+    letter-spacing: 1px;
+}
+
+.sliders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.slider-group {
+    background: rgba(22, 30, 46, 0.4);
+    border: 1px solid rgba(71, 85, 105, 0.15);
+    border-radius: 6px;
+    padding: 12px 16px;
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.label-title {
+    color: #cbd5e1;
+}
+
+/* Custom Range Input Estética Cyberpunk */
+.neon-range {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    outline: none;
+    border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+/* Estilo del "pulgar" (Thumb) - Webkit */
+.neon-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.range-cyan::-webkit-slider-thumb {
+    background: var(--neon-cyan);
+    box-shadow: 0 0 5px var(--neon-cyan);
+}
+
+.range-pink::-webkit-slider-thumb {
+    background: var(--neon-pink);
+    box-shadow: 0 0 5px var(--neon-pink);
+}
+
+.neon-range::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.range-cyan::-webkit-slider-thumb:hover { box-shadow: var(--glow-cyan); }
+.range-pink::-webkit-slider-thumb:hover { box-shadow: var(--glow-pink); }
+
+/* Registro de Consola del paso 1 */
+.console-logs {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(71, 85, 105, 0.2);
+    border-radius: 6px;
+    height: 60px;
+    padding: 10px 15px;
+    font-size: 11px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 20px;
+}
+
+.log-line {
+    line-height: 1.4;
+}
+
+.hack-action-area {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+}
+
+.error-msg {
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    padding: 8px;
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px dashed rgba(239, 68, 68, 0.2);
+    border-radius: 4px;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+/* ------------------------------------------------------------------------
+   12. ESTILOS PASO 5: HACK 2 (NÚCLEO DDOS)
+   ------------------------------------------------------------------------ */
+.ddos-arena {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    height: 180px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.ddos-canvas-absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.ddos-core-wrapper {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.ddos-core-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(13, 19, 29, 0.8);
+    border: 3px solid var(--neon-red);
+    box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.3), var(--glow-red);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--neon-red);
+    transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    outline: none;
+}
+
+.ddos-core-btn:hover {
+    transform: scale(1.05);
+    box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.5), 0 0 15px var(--neon-red);
+}
+
+.ddos-core-btn:active {
+    transform: scale(0.95);
+    background: rgba(239, 68, 68, 0.1);
+    box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.8), 0 0 25px var(--neon-red);
+}
+
+.zap-icon {
+    width: 32px;
+    height: 32px;
+    filter: drop-shadow(0 0 5px var(--neon-red));
+}
+
+.ddos-hint {
+    font-size: 9px;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    animation: pulse-text 1.5s infinite alternate;
+}
+
+@keyframes pulse-text {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+/* Barra de progreso */
+.progress-container {
+    background: rgba(22, 30, 46, 0.4);
+    border: 1px solid rgba(71, 85, 105, 0.15);
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.progress-bar-outer {
+    width: 100%;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(71, 85, 105, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+    border-radius: 10px;
+    transition: width 0.1s ease-out;
+}
+
+.shadow-cyan {
+    box-shadow: 0 0 8px var(--neon-cyan);
+}
+
+.click-counter {
+    font-size: 10px;
+}
+
+/* Flotantes de Patentes */
+.patents-floater {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.patent-toast {
+    position: absolute;
+    font-size: 9px;
+    font-weight: bold;
+    color: var(--neon-cyan);
+    text-shadow: var(--glow-cyan);
+    opacity: 1;
+    transform: translateY(0);
+    animation: float-up-toast 1.2s forwards cubic-bezier(0.1, 0.8, 0.3, 1);
+    white-space: nowrap;
+}
+
+@keyframes float-up-toast {
+    0% {
+        opacity: 1;
+        transform: translateY(20px) scale(0.9);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-40px) scale(1.1);
+    }
+}
+
+/* ------------------------------------------------------------------------
+   13. ESTILOS PASO 6: HACK 3 (INYECCIÓN DE PAYLOAD)
+   ------------------------------------------------------------------------ */
+.injection-game-area {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Pista de oscilación */
+.oscillator-track {
+    width: 100%;
+    height: 40px;
+    background: rgba(22, 30, 46, 0.8);
+    border: 1px solid rgba(71, 85, 105, 0.3);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Zona objetivo verde en el centro */
+.target-zone {
+    position: absolute;
+    left: 40%;
+    right: 40%;
+    width: 20%;
+    height: 100%;
+    background: rgba(34, 197, 94, 0.15);
+    border-left: 2px dashed rgba(34, 197, 94, 0.5);
+    border-right: 2px dashed rgba(34, 197, 94, 0.5);
+    box-shadow: inset 0 0 10px rgba(34, 197, 94, 0.1);
+}
+
+/* Aguja oscilante rosa */
+.indicator-needle {
+    position: absolute;
+    width: 6px;
+    height: 100%;
+    background: var(--neon-pink);
+    box-shadow: var(--glow-pink);
+    top: 0;
+    left: 0;
+    border-radius: 2px;
+}
+
+.shadow-pink {
+    box-shadow: 0 0 8px var(--neon-pink);
+}
+
+.injection-telemetry {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(71, 85, 105, 0.1);
+    font-size: 11px;
+}
+
+.tel-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.tel-lbl {
+    color: #64748b;
+    font-size: 9px;
+}
+
+.penalty-warning {
+    font-size: 10px;
+}
+
+/* ------------------------------------------------------------------------
+   14. ESTILOS PASO 7: PANTALLA DE VICTORIA
+   ------------------------------------------------------------------------ */
+.victory-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.success-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid var(--neon-green);
+    box-shadow: var(--glow-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.success-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.system-expl-banner {
+    width: 100%;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.banner-title {
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.red-neon-glow {
+    color: var(--neon-red);
+    text-shadow: var(--glow-red);
+}
+
+.banner-desc {
+    font-size: 9px;
+    color: #cbd5e1;
+}
+
+/* Caja de Karaoke para las letras */
+.lyrics-karaoke-box {
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.lyrics-player-header {
+    background: var(--bg-header);
+    border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+    padding: 6px 12px;
+    font-size: 9px;
+    color: var(--neon-cyan);
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+.lyrics-scroll {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    scroll-behavior: smooth;
+}
+
+.lyric-line {
+    font-size: 12px;
+    color: #64748b;
+    text-align: center;
+    transition: all 0.3s;
+    line-height: 1.4;
+    width: 100%;
+}
+
+.lyric-line.active-line {
+    color: var(--neon-cyan);
+    text-shadow: var(--glow-cyan);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.victory-story {
+    border-left: 2px solid var(--neon-green);
+    background: rgba(34, 197, 94, 0.02);
+}
+
+/* ------------------------------------------------------------------------
+   15. ESTILOS PASO 8: PANTALLA DE DERROTA (GAME OVER)
+   ------------------------------------------------------------------------ */
+.gameover-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+    height: 100%;
+    padding: 20px 0;
+}
+
+.warning-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--neon-red);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(239, 68, 68, 0.1);
+    box-shadow: var(--glow-red);
+    animation: alert-pulse 1s infinite alternate;
+}
+
+@keyframes alert-pulse {
+    0% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+    100% { box-shadow: 0 0 25px rgba(239, 68, 68, 0.7); }
+}
+
+.warning-icon {
+    width: 40px;
+    height: 40px;
+    color: var(--neon-red);
+    filter: drop-shadow(0 0 5px var(--neon-red));
+}
+
+.gameover-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #cbd5e1;
+    max-width: 500px;
+}
+
+.gameover-lore {
+    font-size: 12px;
+    max-width: 500px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* ------------------------------------------------------------------------
+   16. ESTILOS RESPONSIVOS PARA MOVILES
+   ------------------------------------------------------------------------ */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .terminal-container {
+        height: calc(100vh - 20px);
+        max-height: 600px;
+    }
+    
+    .character-dialog-layout {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .avatar-container {
+        width: 100%;
+    }
+    
+    .glitch-title {
+        font-size: 20px;
+    }
+}

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERM_ORION // NEON_NIRVANA EXPLOIT</title>
+    <!-- 
+        ========================================================================
+        PORTAL DE HACKEO: EL REMIX DE LA JUSTICIA
+        Universo Proiectio — Módulo Transmedia Cloto
+        ========================================================================
+        
+        Descripción: Interfaz táctica interactiva que emula el hackeo realizado 
+        por Orion y Mite para sabotear la retransmisión de Presidente MC y restaurar
+        el honor de Rigel.
+        
+        Alineación estética: Cyberpunk retro-futurista, HSL neones, efecto CRT.
+    -->
+    
+    <!-- Tipografías Premium desde Google Fonts:
+         - Orbitron: Para cabeceras tecnológicas y lecturas digitales.
+         - JetBrains Mono: Para el código, consola y registros de sistema. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,300&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Enlace al archivo de estilos principal -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Canvas para el fondo digital interactivo (lluvia de código y red de nodos) -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Superposición global para emular el brillo y parpadeo de una pantalla CRT analógica -->
+    <div class="crt-overlay"></div>
+
+    <!-- Contenedor principal de la terminal táctica -->
+    <main class="terminal-container" id="terminal-main">
+        
+        <!-- Barra de estado superior (Cabecera del Sistema) -->
+        <header class="terminal-header">
+            <div class="header-left">
+                <!-- Icono de terminal SVG incrustado -->
+                <svg class="header-icon cyan-glow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="4 17 10 11 4 5"></polyline>
+                    <line x1="12" y1="19" x2="20" y2="19"></line>
+                </svg>
+                <span class="header-title">TERM_ORION // EXPL_SYS_332</span>
+            </div>
+            
+            <!-- Indicador del temporizador de seguridad -->
+            <div class="header-right">
+                <div id="timer-box" class="timer-display hidden">
+                    <!-- Icono de reloj SVG -->
+                    <svg class="clock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span id="time-left">02:00</span>
+                </div>
+                <div class="status-indicator-wrapper">
+                    <span class="status-dot"></span>
+                    <span class="status-text">ONLINE</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Área de visualización de contenido interactivo -->
+        <section class="terminal-content" id="screen-viewport">
+
+            <!-- ========================================== -->
+            <!-- PANTALLA 1: INTRODUCCIÓN (Conexión)        -->
+            <!-- ========================================== -->
+            <div class="step-screen active" id="step-intro">
+                <div class="intro-branding">
+                    <h1 class="glitch-title" data-text="EL REMIX DE LA JUSTICIA">EL REMIX DE LA JUSTICIA</h1>
+                    <div class="subtitle-badge">PROIECTIO SYSTEM exploit</div>
+                </div>
+
+                <div class="story-box font-mono">
+                    <p class="story-paragraph">
+                        <span class="console-prompt">&gt;</span> El arrogante <span class="highlight-text red-neon">Presidente MC</span> acaba de insultar a tu hermano <span class="highlight-text cian-neon">Rigel</span> en una transmisión pirata de Humania Records. Ha menospreciado su mente y su ser.
+                    </p>
+                    <p class="story-paragraph">
+                        <span class="console-prompt">&gt;</span> Su ego es monumental, pero su talento es nulo, sostenido únicamente por algoritmos corporativos de afinación.
+                    </p>
+                    <p class="story-paragraph italic">
+                        <span class="console-prompt">&gt;</span> Es hora de infiltrarse en el núcleo de <span class="highlight-text pink-neon">Neon Nirvana</span>, hackear la retransmisión del concierto en directo y reescribir su verdad.
+                    </p>
+                </div>
+
+                <button class="terminal-btn cian-border-btn" id="btn-start">
+                    <span class="btn-glow-layer"></span>
+                    <span class="btn-text">[ CONECTARSE A LA DIMENSIÓN ]</span>
+                </button>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PANTALLA 2: MITE (La Alianza)              -->
+            <!-- ========================================== -->
+            <div class="step-screen" id="step-mite">
+                <div class="character-dialog-layout">
+                    <!-- Avatar holográfico de Mite -->
+                    <div class="avatar-container">
+                        <div class="avatar-holo mite-avatar">
+                            <!-- Icono de diamante/gema de Mite -->
+                            <svg class="mite-diamond" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M50 5 L90 50 L50 95 L10 50 Z" stroke="var(--neon-cyan)" stroke-width="3" fill="rgba(6, 182, 212, 0.1)"></path>
+                                <path d="M50 20 L75 50 L50 80 L25 50 Z" stroke="var(--neon-cyan)" stroke-width="1.5" fill="rgba(6, 182, 212, 0.2)"></path>
+                                <circle cx="50" cy="50" r="6" fill="var(--neon-cyan)" class="pulse-core"></circle>
+                            </svg>
+                            <div class="holo-ring"></div>
+                        </div>
+                        <div class="char-tag">MITE [PROGRAMA IA]</div>
+                    </div>
+
+                    <!-- Cuadro de diálogo de Mite -->
+                    <div class="dialog-bubble font-mono">
+                        <div class="dialog-header">
+                            <span class="dialog-sender">Mite_Core.exe:</span>
+                            <span class="dialog-status">CONECTADO</span>
+                        </div>
+                        <p class="dialog-text">
+                            "¡Usuario #4092! Ese bufón corporativo se atrevió a decir que yo era 'solo un mueble digital sin alma'. ¡Y usó la estructura cognitiva de Rigel como un insulto burdo! Sé perfectamente lo que pretendes hacer... y te voy a dotar de los mejores exploits."
+                        </p>
+                        <p class="dialog-text-alert">
+                            "Tu avatar actual es de nivel 'Novato Gris'. Demasiado básico, los sensores de seguridad te filtrarán por simple aburrimiento. Necesitas estética abstracta de vanguardia para colarte en la sala VIP."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Selección de equipamiento táctico / moda abstracta -->
+                <div class="item-equip-card font-mono">
+                    <div class="card-glow-bg"></div>
+                    <div class="item-visual font-sans">📦 PAQUETE DE FIESTA ABSTRACTA</div>
+                    <ul class="item-specs">
+                        <li>• Sombrero de copa de 8-Bits (Generador de estática visual)</li>
+                        <li>• Capa de Neón Rosa (Emisor de firma: "PARTY")</li>
+                        <li>• Rifle modificado (Falso bastón de caramelos gigante)</li>
+                    </ul>
+                    <button class="terminal-btn pink-border-btn" id="btn-equip">
+                        <span class="btn-text">EQUIPAR Y ACEPTAR EXCENTRICIDAD</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PANTALLA 3: INFILTRACIÓN (Detalle de Capas)-->
+            <!-- ========================================== -->
+            <div class="step-screen" id="step-infiltrate">
+                <div class="story-box font-mono">
+                    <p class="story-paragraph">
+                        <span class="console-prompt">&gt;</span> Los bots centinela te escanean al cruzar la compuerta. Tu capa de neón parpadea salvajemente con el mensaje <span class="highlight-text pink-neon">"PARTY"</span>. Los bots, confundidos por tal nivel de absurdez, catalogan tu presencia como <span class="highlight-text cian-neon">"Excentricidad Nivel 10"</span>. Te dejan pasar sin levantar sospechas.
+                    </p>
+                    <p class="story-paragraph">
+                        <span class="console-prompt">&gt;</span> Te deslizas hasta la consola de retransmisión central de Neon Nirvana. El concierto masivo está por comenzar en las pantallas holográficas del cielo de Dimensión.
+                    </p>
+                </div>
+
+                <!-- Visualización de los firewalls del sistema -->
+                <div class="security-readout font-mono">
+                    <h3 class="readout-title red-neon">
+                        <svg class="shield-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                        SISTEMA DE SEGURIDAD VIP DETECTADO
+                    </h3>
+                    <div class="firewall-layers-grid">
+                        <div class="layer-item locked" id="layer-voc">
+                            <span class="layer-num">CAPA 1</span>
+                            <span class="layer-name">AUTENTICACIÓN VOCAL</span>
+                            <span class="layer-status">[ BLOQUEADA ]</span>
+                        </div>
+                        <div class="layer-item locked" id="layer-cop">
+                            <span class="layer-num">CAPA 2</span>
+                            <span class="layer-name">FILTRO DE COPYRIGHT</span>
+                            <span class="layer-status">[ BLOQUEADA ]</span>
+                        </div>
+                        <div class="layer-item locked" id="layer-inj">
+                            <span class="layer-num">CAPA 3</span>
+                            <span class="layer-name">VALIDACIÓN DE PAYLOAD</span>
+                            <span class="layer-status">[ BLOQUEADA ]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="terminal-btn red-border-btn pulse-anim" id="btn-start-hack">
+                    <span class="btn-text">[ INICIAR PROTOCOLO DE HACKEO ]</span>
+                </button>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PANTALLA 4: FIREWALL 1 (Autotune / Voces)  -->
+            <!-- ========================================== -->
+            <div class="step-screen" id="step-hack1">
+                <div class="hack-header-block">
+                    <h2 class="cyan-neon font-mono flex-center">
+                        <span class="glitch-text" data-text="FIREWALL 1: INTERFAZ VOCAL">FIREWALL 1: INTERFAZ VOCAL</span>
+                    </h2>
+                    <p class="hack-desc font-mono">El sistema vocal de Neon Nirvana busca calibrar el flujo de la voz de Presidente MC. Para vulnerarlo, inyecta un exceso insoportable de arrogancia digital que sobrecargue los filtros lógicos.</p>
+                </div>
+
+                <!-- Canvas para renderizar el osciloscopio en vivo -->
+                <div class="canvas-wrapper">
+                    <canvas id="voice-canvas"></canvas>
+                    <div class="canvas-label font-mono">ANALIZADOR ESPECTRAL DE FRECUENCIA</div>
+                </div>
+
+                <!-- Controles deslizantes tácticos -->
+                <div class="sliders-container font-mono">
+                    <div class="slider-group">
+                        <div class="slider-labels">
+                            <span class="label-title">TONO (LAMBDACISMO)</span>
+                            <span class="label-value cian-neon" id="val-tono">50%</span>
+                        </div>
+                        <input type="range" id="slider-tono" min="0" max="100" value="50" class="neon-range range-cyan">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-labels">
+                            <span class="label-title">NIVEL DE ARROGANCIA (EGO CORE)</span>
+                            <span class="label-value pink-neon" id="val-arrogancia">0%</span>
+                        </div>
+                        <input type="range" id="slider-arrogancia" min="0" max="100" value="0" class="neon-range range-pink">
+                    </div>
+                </div>
+
+                <!-- Terminal de salida de registro en vivo -->
+                <div class="console-logs font-mono" id="voice-logs">
+                    <div class="log-line text-muted">&gt;&gt; Esperando calibración de ego espectral...</div>
+                </div>
+
+                <!-- Botón de avance que se habilitará solo en >95% arrogancia -->
+                <div class="hack-action-area" id="hack1-action">
+                    <div class="error-msg font-mono red-neon" id="hack1-error">[ ACCESO DENEGADO: LA FIRMA VOCAL NO ES LO SUFICIENTEMENTE PRESUMIDA ]</div>
+                    <button class="terminal-btn green-border-btn hidden" id="btn-hack1-bypass">
+                        <span class="btn-text">BYPASS COMPLETO: AVANZAR A CAPA 2</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PANTALLA 5: FIREWALL 2 (Copyright DDOS)    -->
+            <!-- ========================================== -->
+            <div class="step-screen" id="step-hack2">
+                <div class="hack-header-block">
+                    <h2 class="pink-neon font-mono flex-center">
+                        <span class="glitch-text" data-text="FIREWALL 2: SOBRECARGA DE COPYRIGHT">FIREWALL 2: SOBRECARGA DE COPYRIGHT</span>
+                    </h2>
+                    <p class="hack-desc font-mono">El filtro de derechos de autor de Humania bloquea cambios en el script. Sobrecarga la cola del servidor inundándolo con patentes absurdas y ataques de fuerza bruta rápidos.</p>
+                </div>
+
+                <!-- Área interactiva del núcleo de copyright -->
+                <div class="ddos-arena">
+                    <canvas id="ddos-canvas" class="ddos-canvas-absolute"></canvas>
+                    
+                    <div class="ddos-core-wrapper">
+                        <!-- Botón de sobrecarga central con efectos de chispas -->
+                        <button class="ddos-core-btn" id="btn-ddos">
+                            <svg class="zap-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                        </button>
+                        <div class="ddos-hint font-mono">¡HAZ CLIC REPETIDAMENTE EN EL NÚCLEO!</div>
+                    </div>
+                </div>
+
+                <!-- Barra de progreso e información táctica -->
+                <div class="progress-container font-mono">
+                    <div class="progress-labels">
+                        <span>SOBRECARGA DEL SERVIDOR:</span>
+                        <span class="cian-neon" id="ddos-percentage">0%</span>
+                    </div>
+                    <div class="progress-bar-outer">
+                        <div class="progress-bar-inner shadow-cyan" id="ddos-bar" style="width: 0%;"></div>
+                    </div>
+                    <div class="click-counter text-muted text-center" id="clicks-left">Requerido: 15 impactos directos.</div>
+                </div>
+
+                <!-- Log flotante de patentes vulneradas -->
+                <div class="patents-floater font-mono" id="patents-log">
+                    <!-- Se inyectarán dinámicamente patentes rotas aquí -->
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PANTALLA 6: FIREWALL 3 (Payload / Injection)-->
+            <!-- ========================================== -->
+            <div class="step-screen" id="step-hack3">
+                <div class="hack-header-block">
+                    <h2 class="red-neon font-mono flex-center">
+                        <span class="glitch-text" data-text="FIREWALL 3: INYECCIÓN DE PAYLOAD">FIREWALL 3: INYECCIÓN DE PAYLOAD</span>
+                    </h2>
+                    <p class="hack-desc font-mono">Prepara el archivo modificado <span class="highlight-text pink-neon">Mis_Excusas_Remix.mp3</span>. Presiona "INYECTAR CÓDIGO" cuando el indicador oscilante esté exactamente dentro de la zona de tolerancia verde.</p>
+                </div>
+
+                <!-- Minijuego de ritmo y puntería temporal -->
+                <div class="injection-game-area font-mono">
+                    <div class="oscillator-track" id="oscillator-track">
+                        <!-- Zona objetivo (Target Zone) en el centro -->
+                        <div class="target-zone"></div>
+                        <!-- Aguja indicadora que rebota lateralmente -->
+                        <div class="indicator-needle shadow-pink" id="needle"></div>
+                    </div>
+
+                    <div class="injection-telemetry">
+                        <div class="tel-col">
+                            <span class="tel-lbl">ZONA DISPARO:</span>
+                            <span class="highlight-text green-neon">40% - 60%</span>
+                        </div>
+                        <div class="tel-col">
+                            <span class="tel-lbl">POSICIÓN AGUJA:</span>
+                            <span class="highlight-text pink-neon" id="needle-pos">0%</span>
+                        </div>
+                    </div>
+
+                    <button class="terminal-btn red-border-btn shadow-red" id="btn-inject">
+                        <span class="btn-text">INYECTAR CÓDIGO PAYLOAD</span>
+                    </button>
+                    
+                    <p class="penalty-warning text-center text-muted">⚠️ Un disparo fallido restará 5 segundos al temporizador de seguridad.</p>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PANTALLA 7: VICTORIA (Sintaxis Corregida)   -->
+            <!-- ========================================== -->
+            <div class="step-screen" id="step-victory">
+                <div class="victory-header font-mono">
+                    <!-- Icono de éxito con animación de pulso -->
+                    <div class="success-icon-wrapper">
+                        <svg class="success-icon green-neon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h1 class="green-neon font-sans uppercase tracking-widest text-center">SINTAXIS RESTAURADA</h1>
+                    <div class="system-expl-banner font-mono">
+                        <div class="banner-title red-neon-glow">// CRITICAL ERROR 404: TALENTO NO ENCONTRADO</div>
+                        <div class="banner-desc">ESTADO DE PRESIDENTE MC: EXPUESTO EN CADENA GLOBAL</div>
+                    </div>
+                </div>
+
+                <!-- Reproductor del remix y karaoke de la verdad -->
+                <div class="lyrics-karaoke-box font-mono">
+                    <div class="lyrics-player-header">
+                        <span class="player-title">REPRODUCTOR DE LA VERDAD // RIGEL_SOUL.wav</span>
+                        <span class="player-time">01:33 / 01:33</span>
+                    </div>
+                    <div class="lyrics-scroll font-mono" id="lyrics-container">
+                        <!-- Las letras se mostrarán dinámicamente aquí -->
+                    </div>
+                </div>
+
+                <!-- Cierre narrativo -->
+                <div class="story-box font-mono victory-story">
+                    <p class="story-paragraph">
+                        El público holográfico en Neon Nirvana enmudece. La voz real desafinada, nasal y ridícula de Presidente MC resuena en toda la dimensión, cantando exactamente la letra de su propia debilidad e incoherencias lógicas. La multitud de millones de usuarios explota en una carcajada colectiva de proporciones épicas que colapsa los chats.
+                    </p>
+                    <p class="story-paragraph italic">
+                        En las sombras virtuales de la sala técnica, te ajustas tu sombrero de copa de 8-bits, recoges tu capa rosa parpadeante y apagas el terminal con una sonrisa. Sintaxis corregida.
+                    </p>
+                </div>
+
+                <button class="terminal-btn cian-border-btn" id="btn-restart-victory">
+                    <span class="btn-text">VOLVER A JUGAR</span>
+                </button>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PANTALLA 8: GAME OVER (Descubierto)        -->
+            <!-- ========================================== -->
+            <div class="step-screen" id="step-gameover">
+                <div class="gameover-box font-mono">
+                    <!-- Icono de advertencia parpadeando -->
+                    <div class="warning-icon-wrapper red-neon-glow">
+                        <svg class="warning-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    
+                    <h1 class="red-neon font-sans uppercase tracking-widest text-center animate-pulse">TIEMPO AGOTADO</h1>
+                    <p class="gameover-desc text-center">
+                        Los bots centinela de Humania rastrearon la anomalía en el espectro de voz antes de que pudieras inyectar el código. Tu terminal ha sido aislado y tu dirección virtual quemada.
+                    </p>
+                    <p class="gameover-lore red-neon italic text-center">
+                        Presidente MC sigue cantando su arrogancia impunemente y la lógica ha sido derrotada por el ruido blanco.
+                    </p>
+
+                    <button class="terminal-btn red-border-btn shadow-red" id="btn-restart-fail">
+                        <span class="btn-text">REINTENTAR INFILTRACIÓN</span>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Barra inferior del terminal (logs rápidos de sistema) -->
+        <footer class="terminal-footer font-mono">
+            <span class="prompt-symbol">$</span>
+            <div class="scrolling-terminal-log" id="footer-logs">
+                SYS_BOOT: Infiltración inicializada. Esperando órdenes...
+            </div>
+        </footer>
+    </main>
+
+    <!-- Enlace al archivo de scripts principal -->
+    <script src="app.js"></script>
+</body>
+</html>
