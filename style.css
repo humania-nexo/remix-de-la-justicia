@@ -272,7 +272,8 @@ body {
 .step-screen {
     display: none;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
+    height: auto;
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1304,32 +1305,32 @@ body {
 }
 
 /* ------------------------------------------------------------------------
-   16. ESTILOS RESPONSIVOS PARA MOVILES (ULTRA-COMPATIBLE)
+   16. ESTILOS RESPONSIVOS PARA MOVILES (ULTRA-COMPATIBLE CON SCROLL INTERNO)
    ------------------------------------------------------------------------ */
 @media (max-width: 768px) {
     body {
         padding: 10px;
-        overflow-y: auto; /* Permitir scroll de la página en móviles */
-        height: auto;
-        min-height: 100vh;
-        align-items: flex-start; /* Alinear arriba para poder hacer scroll natural */
+        overflow: hidden; /* Mantener la página fija para simular app nativa */
+        height: 100vh;
+        height: 100dvh; /* Soporte dinámico para barras de navegación en móviles */
     }
     
     .terminal-container {
-        height: auto; /* Permitir que crezca con el contenido en móviles */
-        min-height: calc(100vh - 20px);
-        max-height: none; /* Eliminar restricción de altura fija */
+        height: calc(100vh - 20px);
+        height: calc(100dvh - 20px);
+        max-height: none;
         border-radius: 8px;
     }
     
     .terminal-content {
         padding: 16px;
-        overflow-y: visible; /* Dejar que fluya de forma natural en el contenedor de móviles */
-        flex: none;
+        overflow-y: auto; /* Permitir scroll de forma natural e interna */
+        -webkit-overflow-scrolling: touch; /* Scroll táctil ultra fluido en iOS */
+        flex: 1;
     }
     
     .terminal-footer {
-        margin-top: auto; /* Forzar pie de terminal abajo */
+        margin-top: 0;
     }
 
     .glitch-title {
@@ -1404,7 +1405,7 @@ body {
     .target-zone {
         left: 35%;
         right: 35%;
-        width: 30%; /* Ligeramente más fácil en móviles */
+        width: 30%;
     }
 
     .terminal-btn {
