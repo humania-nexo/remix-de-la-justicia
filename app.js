@@ -900,7 +900,6 @@ function resetGameState() {
 const btnStart = document.getElementById('btn-start');
 const btnEquip = document.getElementById('btn-equip');
 const btnStartHack = document.getElementById('btn-start-hack');
-const btnHack1Bypass = document.getElementById('btn-hack1-bypass');
 const btnRestartVictory = document.getElementById('btn-restart-victory');
 const btnRestartFail = document.getElementById('btn-restart-fail');
 
